@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  slam:
+    image: slam/equiv_vo:latest
+    container_name: equiv_vo
+      #networks:
+      #- ros
+    environment:
+      - "DISPLAY=${DISPLAY}"
+      - "QT_GRAPHICSSYSTEM=native"
+      - "NVIDIA_DRIVER_CAPABILITIES=all"
+      - "TERM=xterm-256color"
+      - "XAUTHORITY"
+    working_dir: "/home/${USER}/"
+    privileged: true
+    ipc: host
+    devices:
+      - /dev/nvidia0
+      - /dev/nvidia-modeset
+      - /dev/nvidiactl
+      - /dev/nvidia-uvm
+      - /dev/nvidia-uvm-tools
+        #user: "${UID}:${GID}"
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /home/${USER}/code/docker_home/equiv_vo:/home/${USER}/:rw
+      - /run/media/${USER}/Samsung_T5:/home/${USER}/media:rw
+        #- /etc/group:/etc/group
+        #- /etc/passwd:/etc/passwd
+        #- .bashrc:/home/${USER}/.bashrc:rw
+        #- .bash_history:/home/${USER}/.bash_history:rw
+      # - /home/$USER/rosbag/:/home/${USER}/ws/rosbag/
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    entrypoint: /bin/bash
