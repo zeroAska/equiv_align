@@ -1,5 +1,5 @@
 ## Installation
-Assume your workspace directory is `equiv_vo/`
+Assume your workspace directory is `equiv_align/`
 
 ### Docker 
 1. Download docker-compose [binary](https://github.com/docker/compose/releases) file to `~/.docker/cli-plugins/docker-compose` 
@@ -45,13 +45,6 @@ data
     │   │   └── train
     │   ├── ...
 
-```
-### Pre-compiled data index pickle files for eth3d
-WHen training on eth3d, do this following step first before starting the training, to save time from pre-processing data. In docker container:
-```
-cp data_loader/index_cache/eth3d/scene_cache.*.pickle data_loader/scene_cache/
-cp data_loader/index_cache/eth3d/dataindex_cache.*.pickle data_loader/dataindex_cache/
-```
 
 
 ### Training
@@ -75,6 +68,7 @@ launch the tensorboard:
 `sh scripts/launch_tensorboard.sh`
 
 ### Testing
+Note that when testing, batch_size = 1 for each gpu is recommended.
 1. Test modelnet: `sh scripts/test_modelnet_se3.sh log/[pretrained-model-dir]/checkpoints/`
 2. Test eth3d: `sh scripts/test_eth3d_se3_largescale.sh log/[pretrained-model-dir]/checkpoints/`
 
