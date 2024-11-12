@@ -25,6 +25,7 @@ From now on, we assume that we are operating inside the container.
 
 ## Run training and testing
 ### Setup the data folder inside docker container
+Dataset Link: (Aligned ModelNet40, from E2PN repo)[https://drive.google.com/file/d/1xRoYjz2KCwkyIPf21E-WKIZkjLYabPgJ/view?usp=sharing] and (ETH3D)[https://www.eth3d.net/slam_datasets]
 In docker container:
 ```
 $ cd equiv_align
