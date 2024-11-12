@@ -1,6 +1,5 @@
 ## Installation
-1. Clone: `https://github.com/zeroAska/equiv_align.git`
-2. Assume your workspace directory is `equiv_align/`: `cd equiv_align`
+After cloned, assuming your workspace directory is `equiv_align/`: `cd equiv_align`
 
 ### Docker 
 1. Download docker-compose [binary](https://github.com/docker/compose/releases) file to `~/.docker/cli-plugins/docker-compose` 
@@ -21,11 +20,12 @@ python3 -m venv equiv_align_env
 source equiv_align_env/bin/activate
 cat requirements.txt | xargs -n 1 pip install
 ```
-From now on, we assume that we are operating inside the container.
+From now on, we assume that we are operating inside the container and venv.
 
-## Run training and testing
-### Setup the data folder inside docker container
+## Dataset
+### Download
 Dataset Link: [Aligned ModelNet40, from E2PN repo](https://drive.google.com/file/d/1xRoYjz2KCwkyIPf21E-WKIZkjLYabPgJ/view?usp=sharing) and [ETH3D](https://www.eth3d.net/slam_datasets)
+### Setup the dataset path inside docker container
 In docker container:
 ```
 $ cd equiv_align
@@ -50,7 +50,7 @@ data
     │   ├── ...
 ```
 
-
+## Run training and testing
 ### Training
 #### Modelnet
 In docker container and venv:
