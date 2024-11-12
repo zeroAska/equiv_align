@@ -44,7 +44,7 @@ data
     │   │   ├── testR
     │   │   └── train
     │   ├── ...
-
+```
 
 
 ### Training
@@ -66,6 +66,11 @@ pip3 install tensorflow
 ```
 launch the tensorboard:
 `sh scripts/launch_tensorboard.sh`
+
+### Pretrained weights
+Weights url: [Google Drive Link](https://drive.google.com/drive/folders/10SNc4TO5OTm0CPjp_oltbTYDOMxRU6cP?usp=sharing)
+1. `modelnet`:  Put the [weight file](https://drive.google.com/file/d/1yGcG-hbAPAeeZsTgyOl3e2-UhDzkgxp9/view?usp=drive_link) into `log/modelnet_full_90/checkpoints/`
+2. `eth3d`: Put the [weight file](https://drive.google.com/file/d/1xV3TRTZemZNo3tF4r5AuS4EQ2kPcZdSj/view?usp=drive_link) into `log/eth3d/checkpoints/`
 
 ### Testing
 Note that when testing, batch_size = 1 for each gpu is recommended.
