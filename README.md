@@ -1,5 +1,6 @@
 ## Installation
-Assume your workspace directory is `equiv_align/`
+1. Clone: `https://github.com/zeroAska/equiv_align.git`
+2. Assume your workspace directory is `equiv_align/`: `cd equiv_align`
 
 ### Docker 
 1. Download docker-compose [binary](https://github.com/docker/compose/releases) file to `~/.docker/cli-plugins/docker-compose` 
