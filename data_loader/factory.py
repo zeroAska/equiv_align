@@ -1,3 +1,14 @@
+# This file is part of EquivAlign.
+# 
+# Copyright [2024] [Authors of Paper: Correspondence-free SE(3) point cloud registration in RKHS via unsupervised equivariant learning]
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Author Email: <Ray Zhang rzh@umich.edu>
 from data_loader.tum import TumFormatDataLoader
 
 from torch.utils.data import DataLoader
@@ -5,7 +16,6 @@ import torch
 import pickle
 import os
 import os.path as osp
-from .modelnet import ModelNetDataLoader
 from .modelnet40 import ModelNet40, ModelNet40Alignment, ModelNet40VoxelSmooth
 
 from .stream import ImageStream
@@ -19,7 +29,6 @@ def dataset_factory(dataset_list, **kwargs):
     from torch.utils.data import ConcatDataset
 
     dataset_map = {
-                    'modelnet': (ModelNetDataLoader,),
                     'ModelNet40': (ModelNet40,),
                     'ModelNet40Alignment': (ModelNet40Alignment,)
                    }
@@ -50,7 +59,8 @@ def create_datastream_auto_split(opt):
                                           rand_rotation_degree=opt.exp_args.max_rotation_degree,
                                           use_gt_init=opt.exp_args.use_gt_init,
                                           is_inlier_only=opt.exp_args.is_inlier_only,
-                                          edge_only=opt.exp_args.edge_only)
+                                          edge_only=opt.exp_args.edge_only,
+                                          max_pairs_per_seq=opt.exp_args.max_pairs_per_seq)
             db_val = TumFormatDataLoader(opt.exp_args.dataset_name,
                                           opt.exp_args.dataset_path,
                                           run_mode=opt.exp_args.run_mode,
@@ -59,7 +69,8 @@ def create_datastream_auto_split(opt):
                                           rand_rotation_degree=opt.exp_args.max_rotation_degree,
                                           use_gt_init=opt.exp_args.use_gt_init,
                                           is_inlier_only=opt.exp_args.is_inlier_only,
-                                          edge_only=opt.exp_args.edge_only)
+                                          edge_only=opt.exp_args.edge_only,
+                                         max_pairs_per_seq=opt.exp_args.max_pairs_per_seq)                                         
             db_train = TumFormatDataLoader(opt.exp_args.dataset_name,
                                           opt.exp_args.dataset_path,
                                           run_mode=opt.exp_args.run_mode,
@@ -68,7 +79,10 @@ def create_datastream_auto_split(opt):
                                           rand_rotation_degree=opt.exp_args.max_rotation_degree,
                                           use_gt_init=opt.exp_args.use_gt_init,
                                           is_inlier_only=opt.exp_args.is_inlier_only,
-                                          edge_only=opt.exp_args.edge_only)
+
+                                           edge_only=opt.exp_args.edge_only,
+
+                                           max_pairs_per_seq=opt.exp_args.max_pairs_per_seq)
         
         
         
@@ -81,7 +95,8 @@ def create_datastream_auto_split(opt):
                                            rand_rotation_degree=opt.exp_args.max_rotation_degree,
                                            use_gt_init=opt.exp_args.use_gt_init,
                                            is_inlier_only=opt.exp_args.is_inlier_only,
-                                           edge_only=opt.exp_args.edge_only)
+                                           edge_only=opt.exp_args.edge_only,
+                                                                                     max_pairs_per_seq=opt.exp_args.max_pairs_per_seq)
             db_val = TumFormatDataLoader(opt.exp_args.dataset_name,
                                          opt.exp_args.dataset_path,
                                          run_mode='val',
@@ -90,7 +105,8 @@ def create_datastream_auto_split(opt):
                                          rand_rotation_degree=opt.exp_args.max_rotation_degree,
                                          use_gt_init=opt.exp_args.use_gt_init,
                                          is_inlier_only=opt.exp_args.is_inlier_only,
-                                         edge_only=opt.exp_args.edge_only)
+                                         edge_only=opt.exp_args.edge_only,
+                                         max_pairs_per_seq=opt.exp_args.max_pairs_per_seq)
             db_test = TumFormatDataLoader(opt.exp_args.dataset_name,
                                           opt.exp_args.dataset_path,
                                           run_mode='test',
@@ -99,15 +115,18 @@ def create_datastream_auto_split(opt):
                                           rand_rotation_degree=opt.exp_args.max_rotation_degree,
                                           use_gt_init=opt.exp_args.use_gt_init,
                                           is_inlier_only=opt.exp_args.is_inlier_only,
-                                          edge_only=opt.exp_args.edge_only)
+                                          edge_only=opt.exp_args.edge_only,
+                                          max_pairs_per_seq=opt.exp_args.max_pairs_per_seq)
 
                                       
     else:
         assert False
 
+    #target_batch_size = (opt.exp_args.batch_size if dataset.run_mode != 'test' else len(opt.exp_args.gpus.split(",")))
+    #print("batch size is ", batch_size)
     create_stream = lambda dataset: DataLoader(dataset,
                                                shuffle=(opt.exp_args.run_mode != 'eval_traj'),
-                                               batch_size=(opt.exp_args.batch_size if dataset.run_mode != 'test' else len(opt.exp_args.gpus.split(","))),
+                                               batch_size=1,
                                                num_workers=opt.exp_args.num_workers)
 
 

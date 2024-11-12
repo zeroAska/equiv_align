@@ -1,3 +1,14 @@
+# This file is part of EquivAlign.
+# 
+# Copyright [2024] [Authors of Paper: Correspondence-free SE(3) point cloud registration in RKHS via unsupervised equivariant learning]
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Author Email: <Ray Zhang rzh@umich.edu>
 
 import numpy as np
 import torch
@@ -10,6 +21,7 @@ import math
 import random
 import json
 import pickle
+from collections import OrderedDict
 import os.path as osp
 from data_loader.rgbd_utils import *
 
@@ -58,7 +70,7 @@ class RegistrationDataset(data.Dataset):
             pickle.dump((self.dataset_index,), cachefile)
 
 
-    def _load_index(self, scene_cache_path, dataindex_cache_path):
+    def _load_index(self, scene_cache_path, dataindex_cache_path, max_pair_per_seq=-1):
 
         ### load
         if osp.isfile(scene_cache_path):
@@ -71,9 +83,9 @@ class RegistrationDataset(data.Dataset):
         self.scene_info = scene_info
 
         if osp.isfile(dataindex_cache_path):
-            self.dataset_index = pickle.load(open(dataindex_cache_path, 'rb'))[0]
+            self.dataset_index = OrderedDict(pickle.load(open(dataindex_cache_path, 'rb'))[0])
         else:
-            self.dataset_index = self._build_dataset_index(dataindex_cache_path)
+            self.dataset_index = self._build_dataset_index(dataindex_cache_path, self.max_pairs_per_seq)
 
     def merge_index(self, scene_path1, scene_path2):
         ### get paths for the two index
@@ -106,7 +118,7 @@ class RegistrationDataset(data.Dataset):
         
                 
     def _build_dataset_index(self,cache_path, max_pairs_per_seq=-1):
-        dataset_index = {}
+        dataset_index = OrderedDict()
         for scene in self.scene_info.keys():
             #dataset_index[scene] = []
             graph = self.scene_info[scene]['frame_pairs']
@@ -168,7 +180,13 @@ class RegistrationDataset(data.Dataset):
     def __len__(self):
         #return len(self.dataset_index)
         if self.access_seq == 'random':
-            return sum([len(self.dataset_index[seq_key])for seq_key in self.dataset_index])
+            if self.run_mode == "train":
+                #ipdb.set_trace()
+                return sum([ (len(self.dataset_index[seq_key]) if seq_key in self.train_seqs else 0) for seq_key in self.dataset_index])
+            elif self.run_mode == "val":
+                return sum([ (len(self.dataset_index[seq_key]) if seq_key in self.val_seqs else 0) for seq_key in self.dataset_index])
+            else:
+                return sum([ (len(self.dataset_index[seq_key]) if seq_key in self.test_seqs else 0) for seq_key in self.dataset_index])
         else:
             return len(self.dataset_index[self.access_seq])
 

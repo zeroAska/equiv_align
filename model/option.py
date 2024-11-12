@@ -1,3 +1,14 @@
+# This file is part of EquivAlign.
+# 
+# Copyright [2024] [Authors of Paper: Correspondence-free SE(3) point cloud registration in RKHS via unsupervised equivariant learning]
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Author Email: <Ray Zhang rzh@umich.edu>
 '''
 Source: vgtk https://github.com/minghanz/E2PN/blob/398666c4e537d3d4b009bb824e4d9865f8edb2b0/vgtk/vgtk/app/parse_config.py
 Refactored by Ray Zhang
@@ -65,6 +76,7 @@ def gen_options():
     exp_args.add_argument('--batch-size', type=int, default=8, help='batch size for training or testing')
     exp_args.add_argument('--num-workers', type=int, default=8, help='number of workers for training or testing')
     exp_args.add_argument('--pretrained-model-dir', type=str, default='checkpoints/', help='path to models (the root of all outputs)')
+    exp_args.add_argument('--max-pairs-per-seq', type=int, default=1000, help='the number of samples per sequence in the rgbd datasets')
     #exp_args.add_argument('--pretrained-model-dir', type=str, default='log/2023-07-18_19-15-train_multi_backprop_large_scale/checkpoints/', help='path to models (the root of all outputs)')
     exp_args.add_argument('-s', '--seed', type=int, default=2913,
                           help='random seed')

@@ -23,7 +23,7 @@ SOFTWARE.
 ** E2PN: Efficient SE(3)-Equivariant Point Network; version main -- https://github.com/minghanz/E2PN
 MIT License
 
-Copyright (c) 2021 nintendops
+Copyright (c) 2021 Authors of E2PN
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

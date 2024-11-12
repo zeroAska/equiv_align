@@ -1,3 +1,14 @@
+# This file is part of EquivAlign.
+# 
+# Copyright [2024] [Authors of Paper: Correspondence-free SE(3) point cloud registration in RKHS via unsupervised equivariant learning]
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Author Email: <Ray Zhang rzh@umich.edu>
 from tqdm import tqdm
 from data_loader.base import RegistrationDataset
 import getpass
@@ -23,7 +34,7 @@ import ipdb
 import open3d as o3d
 import open3d
 from open3d.geometry import VoxelGrid, PointCloud
-
+from ordered_set import OrderedSet
 
 class TumFormatDataLoader(RegistrationDataset):
 
@@ -44,7 +55,11 @@ class TumFormatDataLoader(RegistrationDataset):
                  rand_rotation_degree=None,
                  edge_only=False,
                  use_gt_init=False,
-                 is_inlier_only=False):
+                 is_inlier_only=False,
+                 train_seqs=[],
+                 val_seqs=[],
+                 test_seqs=[],
+                 max_pairs_per_seq=-1):
 
         super(TumFormatDataLoader, self).__init__(name, dataset_path, run_mode)        
 
@@ -59,6 +74,7 @@ class TumFormatDataLoader(RegistrationDataset):
 
         self.access_seq=access_seq        
         self.edge_only = edge_only
+        self.max_pairs_per_seq = max_pairs_per_seq
 
 
         cur_path = osp.dirname(osp.abspath(__file__))        
@@ -68,7 +84,23 @@ class TumFormatDataLoader(RegistrationDataset):
             os.mkdir(osp.join(cur_path, 'dataindex_cache'))
         self.scene_cache_path = osp.join(cur_path, 'scene_cache', 'scene_cache.{}.pickle'.format(self.run_mode))
         self.dataindex_cache_path = osp.join(cur_path, 'dataindex_cache', 'dataindex_cache.{}.pickle'.format(self.run_mode))
-        self._load_index(self.scene_cache_path, self.dataindex_cache_path)
+        self._load_index(self.scene_cache_path, self.dataindex_cache_path, self.max_pairs_per_seq)
+
+        if len(train_seqs) == 0: 
+            self.train_seqs = {"cables_3", "ceiling_1", "repetitive", "einstein_2", "sfm_house_loop", "desk_3"}
+        else:
+            self.train_seqs = OrderedSet(train_seqs)
+
+        if len(val_seqs) == 0:
+            self.val_seqs = {"mannequin_3", "sfm_garden"}
+        else:
+            self.val_seqs = OrderedSet(val_seqs)
+
+        if len(test_seqs) == 0:
+            self.test_seqs = {"sfm_lab_room_1", "plant_1", "sfm_bench", "table_3"}
+        else:
+            self.test_seqs = OrderedSet(test_seqs)
+
 
         
         
@@ -421,6 +453,7 @@ class TumFormatDataLoader(RegistrationDataset):
                 xyz2 = frame_cache[j]
             else:
                 if j >= len(images):
+                    continue
                     ipdb.set_trace()
                 xyz2, color_pc2, color2, depth2 = self.read_and_check_frame(j, images, depths, poses, intrinsics)
                 frame_cache[j] = xyz2
@@ -642,7 +675,8 @@ class TumFormatDataLoader(RegistrationDataset):
         #    s = disps[disps>0.01].mean()
         #    disps = disps / s
         #    poses[...,:3] *= s
-
+        #ipdb.set_trace()
+        print("getitem: in_dict is ", in_dict)
         return in_dict
         
 
@@ -657,7 +691,8 @@ class TumFormatDataLoader(RegistrationDataset):
 
         #if (self.access_seq != 'random' and not scene_id.endswith( self.access_seq) ):
         #    return None
-        
+        print("dataset_index[index]: ",dataset_index[index])
+
         id1, id2 = frame_pair
 
         #frame_pairs = self.scene_info[scene_id]['frame_pairs']
@@ -686,15 +721,26 @@ class TumFormatDataLoader(RegistrationDataset):
 
 
     def __getitem__(self, index):
+
         if self.access_seq == 'random':
             #index_all_seq = {key: len(self.dataset_index[key]) for key in self.dataset_index.keys() }
             #curr_ind_remained = self.__len__()
-            for key in self.dataset_index.keys():
+            if self.run_mode == 'train':
+                keys = self.train_seqs
+            elif self.run_mode == 'val':
+                keys = self.val_seqs
+            else:
+                keys = self.test_seqs
+            #ipdb.set_trace()
+            for key in keys: #self.dataset_index.keys():
+                #if key not in self.dataset_index:
+                #    ipdb.set_trace()
                 new_len = len(self.dataset_index[key])
                 if index - new_len > 0:
                     index -= new_len
                 else:
                     selected_key = key
+                    break
             return self.get_dataindex(self.dataset_index[selected_key], index)
         else:
             index = index % len(self.dataset_index[self.access_seq])

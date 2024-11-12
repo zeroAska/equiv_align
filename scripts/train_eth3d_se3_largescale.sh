@@ -1,9 +1,21 @@
+# This file is part of EquivAlign.
+# 
+# Copyright [2024] [Authors of Paper: Correspondence-free SE(3) point cloud registration in RKHS via unsupervised equivariant learning]
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Author Email: <Ray Zhang rzh@umich.edu>
 
 python3 train_tum.py \
         exp_args --gpus "0" \
-        --batch-size  12 \
+        --batch-size  1 \
+	--num-workers 0 \
 	--dataset-name eth3d \
-	--dataset-path /home/`whoami`/data/eth3d/ --num-workers 1 \
+	--dataset-path /home/`whoami`/data/eth3d/ \
         --is-auto-split-dataset \
         --naming-prefix eth3d_se3_largescale \
         --is-shuffle \
