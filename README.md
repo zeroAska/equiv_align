@@ -76,5 +76,24 @@ Note that when testing, batch_size = 1 for each gpu is recommended. In docker co
 
 
 
-
+## Citation
+If you find the repo useful, please consider citing the [paper](https://arxiv.org/abs/2407.20223) as:
+```
+@InProceedings{ZhangRay24equivalign,
+author="Zhang, Ray
+and Zhou, Zheming
+and Sun, Min
+and Ghasemalizadeh, Omid
+and Kuo, Cheng-Hao
+and Eustice, Ryan M.
+and Ghaffari, Maani
+and Sen, Arnie",
+title="Correspondence-Free SE(3) Point Cloud Registration in RKHS via Unsupervised Equivariant Learning",
+booktitle="Computer Vision -- ECCV 2024",
+year="2025",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="68--86",
+}
+```
 
