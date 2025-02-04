@@ -5,6 +5,7 @@ services:
     image: slam/equiv_vo:latest
     container_name: equiv_vo
       #networks:
+    network_mode: host
       #- ros
     environment:
       - "DISPLAY=${DISPLAY}"

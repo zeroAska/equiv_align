@@ -1,4 +1,4 @@
-numpy==1.26.4
+numpy==1.23.1
 torch
 torch-vision
 tqdm
@@ -7,7 +7,7 @@ attrs==22.2.0
 dglgo
 pypose
 matplotlib
-trimesh
+trimesh=3.2.0
 plyfile
 point_cloud_utils
 opencv-python

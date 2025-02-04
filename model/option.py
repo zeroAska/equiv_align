@@ -163,6 +163,8 @@ def gen_options():
     net_args.add_argument('--use-normalized-pose-loss', action='store_true', help='is normalizing the pose loss with batch size on each device')
     net_args.add_argument('--is-updating-coord', action='store_true', help='is updating coordinates in encoder')
     net_args.add_argument('--is-holding-pose-fixed', action='store_true', help='whether holding the pose unchanged')
+    net_args.add_argument('--global-init', type=str, default=None, help='whether using global rotation init strategy at inference time. Choice: None, symmetry')
+    net_args.add_argument('--inlier-filter', type=str, default=None, help='what type of inlier filtering is used. None, Invariance, Transformer')
 
     ### training args ###
     train_args = parser.add_parser("train_args")

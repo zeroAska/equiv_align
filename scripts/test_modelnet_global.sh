@@ -24,15 +24,15 @@ python3 test_modelnet.py \
         --max-translation-norm 0.0  \
 	--crop-ratio 0.0 \
         net_args --num-optimization-iters 800 \
-	--is-centerize  --is-learning-kernel --is-se3 \
+	--is-centerize --is-learning-kernel \
 	--is-gradient-ascent \
         --min-correlation-threshold 0.01 \
         --pose-regression-learning-rate  1e-6 \
 	--use-full-inner-product \
         --use-normalized-pose-loss \
-        --init-ell 1.0 \
-	--global-init 'brutal' \
-        train_args --debug-mode --debug-mode \
+        --init-ell 2.0 \
+	--global-init 'symmetry' \
+        train_args  \
         --num-training-optimization-iters 25 \
         --clip-norm 1e-1 \
         --learning-rate 1e-4 \

@@ -487,6 +487,7 @@ def get_adjmatrix_trimesh_vtx(mesh, gsize=None):
                 opposites.append(j)
                 break
 
+    #import ipdb; ipdb.set_trace()
     level_2s = np.array(level_2s)   # 12,5
     opposites = np.array(opposites) # 12
     return v_neighbors, level_2s, opposites
