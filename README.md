@@ -65,9 +65,9 @@ In docker container and venv:
 Launch the tensorboard: `sh scripts/launch_tensorboard.sh`
 
 ### Pretrained weights
-Weights url: [Google Drive Link](https://drive.google.com/drive/folders/10SNc4TO5OTm0CPjp_oltbTYDOMxRU6cP?usp=sharing)
-1. `modelnet`:  Put the [weight file](https://drive.google.com/file/d/1yGcG-hbAPAeeZsTgyOl3e2-UhDzkgxp9/view?usp=drive_link) into `log/modelnet_full_90/checkpoints/`
-2. `eth3d`: Put the [weight file](https://drive.google.com/file/d/1xV3TRTZemZNo3tF4r5AuS4EQ2kPcZdSj/view?usp=drive_link) into `log/eth3d/checkpoints/`
+Weights url: [Dropbox Link](https://www.dropbox.com/scl/fo/ye8vjz0x9mfpbu8224o3q/AIXIL5DPFqzkvUYfLoqEHKM?rlkey=37ogl2mj4bn7z33v9zm0bhl0d&st=2dwezc8t&dl=0)
+1. `modelnet`:  Put the [weight file](https://www.dropbox.com/scl/fo/ye8vjz0x9mfpbu8224o3q/APJlNdIh6bqrXGjQvWe6m_8/modelnet_full_90/checkpoints?rlkey=37ogl2mj4bn7z33v9zm0bhl0d&subfolder_nav_tracking=1&st=62dsjxb3&dl=0) into `log/modelnet_full_90/checkpoints/`
+2. `eth3d`: Put the [weight file](https://www.dropbox.com/scl/fo/ye8vjz0x9mfpbu8224o3q/AEpnVjsW1xKowFKBjDsjEpI/eth3d/checkpoints?rlkey=37ogl2mj4bn7z33v9zm0bhl0d&subfolder_nav_tracking=1&st=nzcag6cm&dl=0) into `log/eth3d/checkpoints/`
 
 ### Testing
 Note that when testing, batch_size = 1 for each gpu is recommended. In docker container and venv:
